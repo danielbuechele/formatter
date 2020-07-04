@@ -7,9 +7,8 @@ use code_block::*;
 use quote_block::*;
 use strong::*;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum Format {
-  Plain,
   Quote(QuoteBlock),
   Code(CodeBlock),
   Strong(Strong),

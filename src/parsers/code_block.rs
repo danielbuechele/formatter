@@ -1,9 +1,9 @@
 use crate::parsers::Format;
-use crate::utils::{Formatting, Parser, Range};
+use crate::utils::{ContentRange, Formatting, Parser, Range};
 use lazy_static::lazy_static;
 use regex::Regex;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct CodeBlock {
   language: String,
 }
@@ -26,19 +26,17 @@ impl Parser for CodeBlock {
             start: mat.start(),
             length: mat.end() - mat.start(),
           },
-          children: vec![Formatting {
-            format: Format::Plain,
-            children: vec![],
+          content_ranges: vec![ContentRange {
             range: Range {
               start: mat.start() + language.len() + 4,
               length: content.len(),
             },
+            children: vec![],
           }],
-
           format: Format::Code(CodeBlock {
             language: String::from(language),
           }),
-          // children: vec![],
+          allows_subformatting: true,
         }
       })
       .collect::<Vec<Formatting>>()

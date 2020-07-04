@@ -7,7 +7,7 @@ pub trait Parser {
   }
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Range {
   pub start: usize,
   pub length: usize,
@@ -19,10 +19,16 @@ impl Range {
   }
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
+pub struct ContentRange {
+  pub range: Range,
+  pub children: Vec<Formatting>,
+}
+
+#[derive(Debug, PartialEq)]
 pub struct Formatting {
   pub range: Range,
-  // pub content_ranges: Vec<Range>,
-  pub children: Vec<Formatting>,
+  pub content_ranges: Vec<ContentRange>,
   pub format: Format,
+  pub allows_subformatting: bool,
 }

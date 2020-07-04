@@ -1,9 +1,9 @@
 use crate::parsers::Format;
-use crate::utils::{Formatting, Parser, Range};
+use crate::utils::{ContentRange, Formatting, Parser, Range};
 use lazy_static::lazy_static;
 use regex::Regex;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct QuoteBlock {}
 
 impl Parser for QuoteBlock {
@@ -15,17 +15,22 @@ impl Parser for QuoteBlock {
       .map(|mat| {
         let substr = &text[mat.start()..mat.end()];
         let captures = RE.captures(substr).unwrap();
-        let language = &captures[1];
-        let content = &captures[2];
 
         Formatting {
           range: Range {
             start: mat.start(),
             length: mat.end() - mat.start(),
           },
-          // content_ranges: vec![],
+          content_ranges: vec![ContentRange {
+            // TODO
+            range: Range {
+              start: mat.start(),
+              length: mat.end() - mat.start(),
+            },
+            children: vec![],
+          }],
           format: Format::Quote(QuoteBlock {}),
-          children: vec![],
+          allows_subformatting: true,
         }
       })
       .collect::<Vec<Formatting>>()

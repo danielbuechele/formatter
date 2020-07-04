@@ -6,23 +6,18 @@ use crate::utils::Formatting;
 
 fn insert_if_fits(existing: &mut Vec<Formatting>, item: Formatting) -> bool {
     for formatting in existing.iter_mut() {
-        for child in formatting.children.iter() {
-            let replaces =
-                child.range.start == item.range.start && item.range.end() == child.range.end();
-
-            let fits_into =
-                child.range.start <= item.range.start && item.range.end() <= child.range.end();
+        for content_range in formatting.content_ranges.iter_mut() {
+            let fits_into = content_range.range.start <= item.range.start
+                && item.range.end() <= content_range.range.end();
 
             let is_ovelap = !fits_into
-                && item.range.end() > child.range.start
-                && item.range.start < child.range.end();
+                && item.range.end() > content_range.range.start
+                && item.range.start < content_range.range.end();
 
-            println!("fits_into: {}, is_ovelap: {}", fits_into, is_ovelap);
+            // println!("fits_into: {}, is_ovelap: {}", fits_into, is_ovelap);
 
-            if replaces {
-                // formatting.format = child.format.clone();
-            } else if fits_into {
-                return insert_if_fits(&mut formatting.children, item);
+            if fits_into {
+                return insert_if_fits(&mut content_range.children, item);
             } else if is_ovelap {
                 return false;
             }
@@ -57,6 +52,6 @@ mod tests {
     fn it_works() {
         let text = "test\n```js\nc*od*e1\n```\n\ntest\n```js\ncode2\n```\n\ntest";
         let ranges: Vec<crate::utils::Formatting> = crate::parse_message(text);
-        println!("{:#?}", ranges);
+        // println!("{:#?}", ranges);
     }
 }
