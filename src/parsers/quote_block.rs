@@ -23,7 +23,7 @@ impl Parser for QuoteBlock {
             start: mat.start(),
             length: mat.end() - mat.start(),
           },
-          content_ranges: vec![],
+          // content_ranges: vec![],
           format: Format::Quote(QuoteBlock {}),
           children: vec![],
         }

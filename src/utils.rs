@@ -22,7 +22,7 @@ impl Range {
 #[derive(Debug)]
 pub struct Formatting {
   pub range: Range,
-  pub content_ranges: Vec<Range>,
+  // pub content_ranges: Vec<Range>,
   pub children: Vec<Formatting>,
   pub format: Format,
 }

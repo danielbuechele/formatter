@@ -6,17 +6,22 @@ use crate::utils::Formatting;
 
 fn insert_if_fits(existing: &mut Vec<Formatting>, item: Formatting) -> bool {
     for formatting in existing.iter_mut() {
-        for content_range in formatting.content_ranges.iter() {
+        for child in formatting.children.iter() {
+            let replaces =
+                child.range.start == item.range.start && item.range.end() == child.range.end();
+
             let fits_into =
-                content_range.start <= item.range.start && item.range.end() <= content_range.end();
+                child.range.start <= item.range.start && item.range.end() <= child.range.end();
 
             let is_ovelap = !fits_into
-                && item.range.end() > content_range.start
-                && item.range.start < content_range.end();
+                && item.range.end() > child.range.start
+                && item.range.start < child.range.end();
 
             println!("fits_into: {}, is_ovelap: {}", fits_into, is_ovelap);
 
-            if fits_into {
+            if replaces {
+                // formatting.format = child.format.clone();
+            } else if fits_into {
                 return insert_if_fits(&mut formatting.children, item);
             } else if is_ovelap {
                 return false;

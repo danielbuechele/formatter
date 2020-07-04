@@ -9,6 +9,7 @@ use strong::*;
 
 #[derive(Debug)]
 pub enum Format {
+  Plain,
   Quote(QuoteBlock),
   Code(CodeBlock),
   Strong(Strong),

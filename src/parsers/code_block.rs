@@ -26,14 +26,19 @@ impl Parser for CodeBlock {
             start: mat.start(),
             length: mat.end() - mat.start(),
           },
-          content_ranges: vec![Range {
-            start: mat.start() + language.len() + 4,
-            length: content.len(),
+          children: vec![Formatting {
+            format: Format::Plain,
+            children: vec![],
+            range: Range {
+              start: mat.start() + language.len() + 4,
+              length: content.len(),
+            },
           }],
+
           format: Format::Code(CodeBlock {
             language: String::from(language),
           }),
-          children: vec![],
+          // children: vec![],
         }
       })
       .collect::<Vec<Formatting>>()

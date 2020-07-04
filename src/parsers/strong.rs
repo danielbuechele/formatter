@@ -17,12 +17,19 @@ impl Parser for Strong {
           start: mat.start(),
           length: mat.end() - mat.start(),
         },
-        content_ranges: vec![Range {
-          start: mat.start() + 1,
-          length: mat.end() - mat.start() - 2,
-        }],
+        // content_ranges: vec![Range {
+        //   start: mat.start() + 1,
+        //   length: mat.end() - mat.start() - 2,
+        // }],
         format: Format::Strong(Strong {}),
-        children: vec![],
+        children: vec![Formatting {
+          format: Format::Plain,
+          children: vec![],
+          range: Range {
+            start: mat.start() + 1,
+            length: mat.end() - mat.start() - 2,
+          },
+        }],
       })
       .collect::<Vec<Formatting>>()
   }
