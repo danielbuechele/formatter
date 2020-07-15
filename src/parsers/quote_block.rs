@@ -16,19 +16,25 @@ impl Parser for QuoteBlock {
         let substr = &text[mat.start()..mat.end()];
         let captures = RE.captures(substr).unwrap();
 
+        let content_ranges = vec![];
+
+        /*
+        vec![ContentRange {
+          // TODO
+          range: Range {
+            start: mat.start(),
+            length: mat.end() - mat.start(),
+          },
+          children: vec![],
+        }]
+        */
+
         Formatting {
           range: Range {
             start: mat.start(),
             length: mat.end() - mat.start(),
           },
-          content_ranges: vec![ContentRange {
-            // TODO
-            range: Range {
-              start: mat.start(),
-              length: mat.end() - mat.start(),
-            },
-            children: vec![],
-          }],
+          content_ranges: content_ranges,
           format: Format::Quote(QuoteBlock {}),
           allows_subformatting: true,
         }
